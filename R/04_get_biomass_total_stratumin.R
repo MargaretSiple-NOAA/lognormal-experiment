@@ -3,7 +3,8 @@
 # RACEBASE equivalent table: BIOMASS_TOTAL
 # BIOMASS_TOTAL has SURVEY_AREA, YEAR, SPECIES CODE, HAUL_COUNT, CATCH_COUNT, MEAN_WGT_CPUE, VAR_WGT_CPUE, MEAN_NUM_CPUE, VAR_NUM_CPUE, TOTAL_BIOMASS, BIOMASS_VAR, MIN_BIOMASS, MAX_BIOMASS, TOTAL_POP, POP_VAR, MIN_POP, MAX_POP
 
-get_biomass_total <- function(strata = switch(survey_area,
+get_biomass_total <- function(survey_area = "GOA",
+                              strata = switch(survey_area,
                                 "GOA" = goa_strata,
                                 "AI" = ai_strata
                               ),
