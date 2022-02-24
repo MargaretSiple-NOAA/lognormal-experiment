@@ -3,6 +3,10 @@
 source("R/01_cleanup_data.R") #from design-based code
 library(tidyverse)
 
+
+
+# Preliminary stuff -------------------------------------------------------
+# Look at strata, see which are similar and diff in terms of biomass mean and CV
 catch %>% 
   filter(haul==199 & cruise==200501)
 
@@ -12,24 +16,58 @@ samplecounts <- haul %>%
   group_by(cruise, stratum) %>%
   count() %>%
   ungroup()
+
+samplecounts %>% filter(cruise==202101)
+
 summary(samplecounts)
 # 1-77 abundance hauls per year per stratum (median of 10 hauls per stratum)
 
+# Summarize biomass mean and CV by stratum and year - POP
+source("R/02_get_cpue.R")
+source("R/03_get_biomass_stratum.R")
+source("R/04_get_biomass_total.R")
+
+b_stratum_pop <- get_biomass_stratum(speciescode = 30060, survey_area = "GOA")
+
+b_stratum_pop %>%
+  ggplot(aes(x=year, y = mean_wgt_cpue, colour = factor(stratum))) +
+  geom_line()
+
+b_stratum_pop %>%
+  filter(year==2021) %>%
+  filter(mean_wgt_cpue > 0) %>%
+  ggplot(aes(x=factor(stratum),y=mean_wgt_cpue)) +
+  geom_col() +
+  labs(title = "Mean CPUE by weight, GOA POP in 2021")
+
+# Find strata with similar biomasses
+x <- b_stratum_pop %>% filter(year==2021)
+xx <- outer(x$stratum_biomass,x$stratum_biomass, FUN = "-")
+rownames(xx) <- colnames(xx) <- x$stratum
+xx[lower.tri(xx)] <- NA
 
 # Example with POP --------------------------------------------------------
 #These scripts are all from design-based-indices (a repo which should be a package)
-source("R/02_get_cpue.R")
+
 source("R/03_get_biomass_stratum_cpuein.R")
 source("R/04_get_biomass_total_stratumin.R")
 
+
 #####
-# haul level
+
+# Bootstrap at haul level -------------------------------------------------
+# Main question: are stratum-level biomass estimates actually lognormally distributed? Bootstrap at haul scale within a stratum (?) to find out. 
 # subset to abundance hauls in GOA 2021
+
+# Size of bootstrap sample and which stratum to focus on
 samplesize <- 50
+stratum_boot <- 
+  
 abund_hauls <- haul %>% 
   filter(abundance_haul=="Y" & 
            lubridate::year(start_time) == 2021 & 
            region == "GOA")
+
 
 x <- sample(1:nrow(abund_hauls), size = samplesize)
 boot_hauls <- abund_hauls[x,]
