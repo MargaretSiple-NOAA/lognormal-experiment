@@ -69,7 +69,7 @@ source("R/04_get_biomass_total_stratumin.R")
 
 # Size of bootstrap sample and which stratum to focus on
 strata_boot <- c(130) #, 221, 250, 131 eyeballed these to see which strata have similar biomasses
-  
+nboots <- 1000  
 
 abund_hauls <- haul %>% 
   filter(abundance_haul=="Y" & 
@@ -80,6 +80,7 @@ abund_hauls <- haul %>%
 # Size of bootstrap sample - 50% of total hauls?
 samplesize <- floor(nrow(abund_hauls) * .5)
 
+boots_biomass<- vector()
 set.seed(123)
 
 for(i in 1:nboots){
@@ -89,10 +90,12 @@ boot_cpue <- get_cpue(racebase_tables = list(
   cruisedat = cruisedat,
   haul = boot_hauls, #***
   catch = catch
-),speciescode = 30060,
+), speciescode = 30060,
 survey_area = "GOA")
 boot_biomass_stratum <- get_biomass_stratum(cpue_table = boot_cpue, 
                                             speciescode = 30060, 
                                             survey_area = "GOA")
-boots_biomass[i] <- 
+boots_biomass[i] <- boot_biomass_stratum$stratum_biomass
 }
+
+hist(boots_biomass)
