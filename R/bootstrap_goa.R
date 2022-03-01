@@ -98,4 +98,14 @@ boot_biomass_stratum <- get_biomass_stratum(cpue_table = boot_cpue,
 boots_biomass[i] <- boot_biomass_stratum$stratum_biomass
 }
 
-hist(boots_biomass)
+par(mfrow=c(1,2))
+hist(log(boots_biomass),freq=FALSE,main = "POP - GOA - 2021",xlab="Log(stratum biomass)")
+curve(dnorm(x, mean=mean(log(boots_biomass)), sd=sd(log(boots_biomass))), add=TRUE,
+      from=min(log(boots_biomass)), to=max(log(boots_biomass)),
+      lwd=2)
+
+qqnorm(log(boots_biomass),main = "POP - GOA - 2021")
+qqline(log(boots_biomass), col = 2)
+
+GOAPOP_2021 <- boots_biomass
+
