@@ -20,7 +20,7 @@ get_biomass_total <- function(survey_area = "GOA",
       mean_num_cpue = sum(mean_num_cpue * area, na.rm = TRUE) / At,
       var_wgt_cpue = sum(stratum_ratio^2 * var_wgt_cpue, na.rm = TRUE),
       var_num_cpue = sum(stratum_ratio^2 * var_num_cpue, na.rm = TRUE),
-      total_biomass = sum(stratum_biomass), # checked - ok
+      total_biomass = sum(stratum_biomass, na.rm=TRUE), # checked - ok
       biomass_var = sum(biomass_var), # checked - ok
       # min_biomass = ,
       # max_biomass = ,
