@@ -98,6 +98,7 @@ boot_biomass_stratum <- get_biomass_stratum(cpue_table = boot_cpue,
 boots_biomass[i] <- boot_biomass_stratum$stratum_biomass
 }
 
+png("img/POP_GOA_2021_1000.png",width = 10,height = 5,units='in',res = 120)
 par(mfrow=c(1,2))
 hist(log(boots_biomass),freq=FALSE,main = "POP - GOA - 2021",xlab="Log(stratum biomass)")
 curve(dnorm(x, mean=mean(log(boots_biomass)), sd=sd(log(boots_biomass))), add=TRUE,
@@ -106,6 +107,39 @@ curve(dnorm(x, mean=mean(log(boots_biomass)), sd=sd(log(boots_biomass))), add=TR
 
 qqnorm(log(boots_biomass),main = "POP - GOA - 2021")
 qqline(log(boots_biomass), col = 2)
+dev.off()
 
 GOAPOP_2021 <- boots_biomass
 
+
+# Try with arrowtooth -----------------------------------------------------
+
+
+boots_biomass<- vector()
+set.seed(123)
+
+for(i in 1:nboots){
+  x <- sample(1:nrow(abund_hauls), size = samplesize)
+  boot_hauls <- abund_hauls[x,]
+  boot_cpue <- get_cpue(racebase_tables = list(
+    cruisedat = cruisedat,
+    haul = boot_hauls, #***
+    catch = catch
+  ), speciescode = 10110,
+  survey_area = "GOA")
+  boot_biomass_stratum <- get_biomass_stratum(cpue_table = boot_cpue, 
+                                              speciescode = 10110, 
+                                              survey_area = "GOA")
+  boots_biomass[i] <- boot_biomass_stratum$stratum_biomass
+}
+
+png("img/ATF_GOA_2021_1000.png",width = 10,height = 5,units='in',res = 120)
+par(mfrow=c(1,2))
+hist(log(boots_biomass),freq=FALSE,main = "ATF - GOA - 2021",xlab="Log(stratum biomass)")
+curve(dnorm(x, mean=mean(log(boots_biomass)), sd=sd(log(boots_biomass))), add=TRUE,
+      from=min(log(boots_biomass)), to=max(log(boots_biomass)),
+      lwd=2)
+
+qqnorm(log(boots_biomass),main = "ATF - GOA - 2021")
+qqline(log(boots_biomass), col = 2)
+dev.off()
