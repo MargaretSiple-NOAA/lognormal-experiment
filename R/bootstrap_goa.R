@@ -191,8 +191,15 @@ POP_out <- rbind(POP_out,bb)
 cat(j/length(strata_boot))
 }
 
-save(list = "POP_out",file = "output/POP_allstrata.Rdata")
+save(list = "POP_out",file = "outputs/POP_allstrata.Rdata")
 
+
+ggplot(POP_out, aes(x=log(biomass_stratum_boot))) + geom_histogram(bins=10) +facet_wrap(~stratum,scales = "free")
+
+test <- POP_out %>% filter(stratum==130)
+hist(log(test$biomass_stratum_boot),freq=FALSE)
+curve(dnorm(x, mean=mean(log(test$biomass_stratum_boot)), 
+            sd=sd(log(test$biomass_stratum_boot))), add=TRUE,lwd=2)
 # png("img/ATF_GOA_2021_1000.png",width = 10,height = 5,units='in',res = 120)
 # par(mfrow=c(1,2))
 # hist(log(boots_biomass),freq=FALSE,main = "ATF - GOA - 2021",xlab="Log(stratum biomass)",xlim=c(min(log(boots_biomass)),max(log(boots_biomass)*1.05)))
