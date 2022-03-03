@@ -276,9 +276,9 @@ for (j in 1:length(strata_boot)) {
     boots_biomass[i] <- boot_biomass_stratum$stratum_biomass
   }
 
-  bb <- data.frame(sim = 1:length(boots_biomass), stratum = strata_boot[j], year = 2021, species = "POP", biomass_stratum_boot = boots_biomass)
+  bb <- data.frame(sim = 1:length(boots_biomass), stratum = strata_boot[j], year = 2021, species = "ATF", biomass_stratum_boot = boots_biomass)
   ATF_out <- rbind(ATF_out, bb)
-  cat(j / length(strata_boot))
+  cat("\n",j / length(strata_boot))
 }
 Sys.time() - start.time
 save(list = "ATF_out", file = "outputs/ATF_allstrata_new.Rdata")
