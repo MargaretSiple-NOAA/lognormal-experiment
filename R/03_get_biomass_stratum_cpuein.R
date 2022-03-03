@@ -49,9 +49,9 @@ get_biomass_stratum <- function(cpue_table,
       mean_num_cpue, var_num_cpue
     )
 
-  if (all(x2$catch_count <= x2$haul_count)) {
-    print("Number of hauls with positive catches is realistic.")
-  }
+  # if (all(x2$catch_count <= x2$haul_count)) {
+  #   print("Number of hauls with positive catches is realistic.")
+  # }
 
   # RACEBASE equivalent table: BIOMASS_STRATUM
   biomass_stratum <- x2 %>%
