@@ -149,14 +149,14 @@ for (i in 1:nboots) {
 
 png("img/ATF_GOA_2021_1000.png", width = 10, height = 5, units = "in", res = 120)
 par(mfrow = c(1, 2))
-hist(log(boots_biomass), freq = FALSE, main = "ATF - GOA - 2021", xlab = "Log(stratum biomass)", xlim = c(min(log(boots_biomass)), max(log(boots_biomass) * 1.05)))
+hist(log(boots_biomass), freq = FALSE, main = "ATF - GOA - 2021 - stratum 130", xlab = "Log(stratum biomass)", xlim = c(min(log(boots_biomass)), max(log(boots_biomass) * 1.05)))
 curve(dnorm(x, mean = mean(log(boots_biomass)), sd = sd(log(boots_biomass))),
   add = TRUE,
   from = min(log(boots_biomass)), to = max(log(boots_biomass) * 1.05),
   lwd = 2
 )
 
-qqnorm(log(boots_biomass), main = "ATF - GOA - 2021")
+qqnorm(log(boots_biomass), main = "ATF - GOA - 2021 - stratum 130")
 qqline(log(boots_biomass), col = 2)
 dev.off()
 
@@ -168,7 +168,7 @@ save(file = "outputs/POP_ATF.Rdata", list = c("GOAATF_2021", "GOAPOP_2021"))
 
 # Big simulation with multiple strata -------------------------------------
 strata_boot <- unique(haul$stratum) # , 221, 250, 131 eyeballed these to see which strata have similar biomasses
-nboots <- 1000
+nboots <- 500
 
 POP_out <- vector()
 start.time=Sys.time()
@@ -214,7 +214,7 @@ for (j in 1:length(strata_boot)) {
     biomass_stratum_boot = boots_biomass
   )
   POP_out <- rbind(POP_out, bb)
-  cat("\n",j / length(strata_boot))
+ # cat("\n",j / length(strata_boot))
 }
 
 Sys.time()-start.time
@@ -237,11 +237,12 @@ curve(dnorm(x,
 # Big bootstrap - ATF -----------------------------------------------------
 
 strata_boot <- unique(haul$stratum) # , 221, 250, 131 eyeballed these to see which strata have similar biomasses
-nboots <- 1000
+nboots <- 50
 
 ATF_out <- vector()
-start_time <- Sys.time()
-for (j in 1:length(strata_boot)) {
+Rprof()
+#start_time <- Sys.time()
+for (j in 1:1) { #length(strata_boot)
   abund_hauls <- haul %>%
     filter(abundance_haul == "Y" &
       lubridate::year(start_time) == 2021 &
@@ -280,7 +281,10 @@ for (j in 1:length(strata_boot)) {
   ATF_out <- rbind(ATF_out, bb)
   cat("\n",j / length(strata_boot))
 }
-Sys.time() - start.time
+#Sys.time() - start.time
+Rprof(NULL)
+summaryRprof()
+
 save(list = "ATF_out", file = "outputs/ATF_allstrata_new.Rdata")
 
 
