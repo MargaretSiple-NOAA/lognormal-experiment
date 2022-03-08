@@ -1,0 +1,279 @@
+$by.self
+                              self.time self.pct total.time
+"withCallingHandlers"              0.08    16.67       0.36
+"FUN"                              0.04     8.33       0.06
+".Call"                            0.02     4.17       0.10
+"packageDescription"               0.02     4.17       0.10
+"ifelse"                           0.02     4.17       0.04
+"readRDS"                          0.02     4.17       0.04
+"%in%"                             0.02     4.17       0.02
+"...elt"                           0.02     4.17       0.02
+"<Anonymous>"                      0.02     4.17       0.02
+"=="                               0.02     4.17       0.02
+"dplyr_col_modify.data.frame"      0.02     4.17       0.02
+"exists"                           0.02     4.17       0.02
+"f"                                0.02     4.17       0.02
+"gzfile"                           0.02     4.17       0.02
+"is_function"                      0.02     4.17       0.02
+"lengths"                          0.02     4.17       0.02
+"names"                            0.02     4.17       0.02
+"propagate_names"                  0.02     4.17       0.02
+"vec_is_list"                      0.02     4.17       0.02
+"vec_slice"                        0.02     4.17       0.02
+                              total.pct
+"withCallingHandlers"             75.00
+"FUN"                             12.50
+".Call"                           20.83
+"packageDescription"              20.83
+"ifelse"                           8.33
+"readRDS"                          8.33
+"%in%"                             4.17
+"...elt"                           4.17
+"<Anonymous>"                      4.17
+"=="                               4.17
+"dplyr_col_modify.data.frame"      4.17
+"exists"                           4.17
+"f"                                4.17
+"gzfile"                           4.17
+"is_function"                      4.17
+"lengths"                          4.17
+"names"                            4.17
+"propagate_names"                  4.17
+"vec_is_list"                      4.17
+"vec_slice"                        4.17
+
+$by.total
+                              total.time total.pct self.time
+"get_biomass_stratum"               0.46     95.83      0.00
+"%>%"                               0.42     87.50      0.00
+".External2"                        0.42     87.50      0.00
+"withCallingHandlers"               0.36     75.00      0.08
+"get_cpue"                          0.22     45.83      0.00
+"doTryCatch"                        0.20     41.67      0.00
+"select"                            0.20     41.67      0.00
+"tryCatch"                          0.20     41.67      0.00
+"tryCatchList"                      0.20     41.67      0.00
+"tryCatchOne"                       0.20     41.67      0.00
+"dplyr::rename"                     0.18     37.50      0.00
+"dplyr::select"                     0.16     33.33      0.00
+"eval_c"                            0.14     29.17      0.00
+"eval_select_impl"                  0.14     29.17      0.00
+"instrument_base_errors"            0.14     29.17      0.00
+"reduce_sels"                       0.14     29.17      0.00
+"vars_select_eval"                  0.14     29.17      0.00
+"walk_data_tree"                    0.14     29.17      0.00
+"with_subscript_errors"             0.14     29.17      0.00
+"left_join"                         0.12     25.00      0.00
+"mutate"                            0.12     25.00      0.00
+"replace_na"                        0.12     25.00      0.00
+"select.data.frame"                 0.12     25.00      0.00
+"tidyselect::eval_select"           0.12     25.00      0.00
+".Call"                             0.10     20.83      0.02
+"packageDescription"                0.10     20.83      0.02
+".rlang_cli_compat"                 0.10     20.83      0.00
+".rlang_cli_format_fallback"        0.10     20.83      0.00
+"join_mutate"                       0.10     20.83      0.00
+"left_join.data.frame"              0.10     20.83      0.00
+"rlang::signal"                     0.10     20.83      0.00
+"scoped_bindings"                   0.10     20.83      0.00
+"signal_soft_deprecated"            0.10     20.83      0.00
+"suppressWarnings"                  0.10     20.83      0.00
+"utils::packageVersion"             0.10     20.83      0.00
+"[<-"                               0.08     16.67      0.00
+"[<-.tbl_df"                        0.08     16.67      0.00
+"mutate.data.frame"                 0.08     16.67      0.00
+"tbl_subassign"                     0.08     16.67      0.00
+"vectbl_recycle_rhs_rows"           0.08     16.67      0.00
+"FUN"                               0.06     12.50      0.04
+"dplyr::summarize"                  0.06     12.50      0.00
+"dplyr::ungroup"                    0.06     12.50      0.00
+"filter"                            0.06     12.50      0.00
+"mutate_cols"                       0.06     12.50      0.00
+"ifelse"                            0.04      8.33      0.02
+"readRDS"                           0.04      8.33      0.02
+"cb$putconst"                       0.04      8.33      0.00
+"cmp"                               0.04      8.33      0.00
+"cmpCall"                           0.04      8.33      0.00
+"cmpCallArgs"                       0.04      8.33      0.00
+"cmpCallSymFun"                     0.04      8.33      0.00
+"cmpfun"                            0.04      8.33      0.00
+"cmpPrim2"                          0.04      8.33      0.00
+"cmpSymbolAssign"                   0.04      8.33      0.00
+"compiler:::tryCmpfun"              0.04      8.33      0.00
+"filter.data.frame"                 0.04      8.33      0.00
+"filter_rows"                       0.04      8.33      0.00
+"genCode"                           0.04      8.33      0.00
+"h"                                 0.04      8.33      0.00
+"lapply"                            0.04      8.33      0.00
+"map_lgl"                           0.04      8.33      0.00
+"mask$eval_all_mutate"              0.04      8.33      0.00
+"mask$eval_all_summarise"           0.04      8.33      0.00
+"sel_operation"                     0.04      8.33      0.00
+"sel_union"                         0.04      8.33      0.00
+"summarise.grouped_df"              0.04      8.33      0.00
+"summarise_cols"                    0.04      8.33      0.00
+"try"                               0.04      8.33      0.00
+"tryInline"                         0.04      8.33      0.00
+"%in%"                              0.02      4.17      0.02
+"...elt"                            0.02      4.17      0.02
+"<Anonymous>"                       0.02      4.17      0.02
+"=="                                0.02      4.17      0.02
+"dplyr_col_modify.data.frame"       0.02      4.17      0.02
+"exists"                            0.02      4.17      0.02
+"f"                                 0.02      4.17      0.02
+"gzfile"                            0.02      4.17      0.02
+"is_function"                       0.02      4.17      0.02
+"lengths"                           0.02      4.17      0.02
+"names"                             0.02      4.17      0.02
+"propagate_names"                   0.02      4.17      0.02
+"vec_is_list"                       0.02      4.17      0.02
+"vec_slice"                         0.02      4.17      0.02
+".rlang_purrr_map_mold"             0.02      4.17      0.00
+".rs.callAs"                        0.02      4.17      0.00
+"arrange"                           0.02      4.17      0.00
+"as_function"                       0.02      4.17      0.00
+"cmpCallExprFun"                    0.02      4.17      0.00
+"cmpSym"                            0.02      4.17      0.00
+"dplyr_col_modify"                  0.02      4.17      0.00
+"dplyr_col_modify.rowwise_df"       0.02      4.17      0.00
+"dplyr_quosures"                    0.02      4.17      0.00
+"endots"                            0.02      4.17      0.00
+"enquos"                            0.02      4.17      0.00
+"findCenvVar"                       0.02      4.17      0.00
+"findVar"                           0.02      4.17      0.00
+"group_by"                          0.02      4.17      0.00
+"group_by.data.frame"               0.02      4.17      0.00
+"group_by_prepare"                  0.02      4.17      0.00
+"join_rows"                         0.02      4.17      0.00
+"map_mold"                          0.02      4.17      0.00
+"mask$add_one"                      0.02      4.17      0.00
+"mask$eval_all_filter"              0.02      4.17      0.00
+"rename.data.frame"                 0.02      4.17      0.00
+"rename_impl"                       0.02      4.17      0.00
+"Rprof"                             0.02      4.17      0.00
+"sel_op"                            0.02      4.17      0.00
+"stopifnot"                         0.02      4.17      0.00
+"tidyselect::eval_rename"           0.02      4.17      0.00
+"vapply"                            0.02      4.17      0.00
+"var"                               0.02      4.17      0.00
+"vctrs::vec_unique"                 0.02      4.17      0.00
+                              self.pct
+"get_biomass_stratum"             0.00
+"%>%"                             0.00
+".External2"                      0.00
+"withCallingHandlers"            16.67
+"get_cpue"                        0.00
+"doTryCatch"                      0.00
+"select"                          0.00
+"tryCatch"                        0.00
+"tryCatchList"                    0.00
+"tryCatchOne"                     0.00
+"dplyr::rename"                   0.00
+"dplyr::select"                   0.00
+"eval_c"                          0.00
+"eval_select_impl"                0.00
+"instrument_base_errors"          0.00
+"reduce_sels"                     0.00
+"vars_select_eval"                0.00
+"walk_data_tree"                  0.00
+"with_subscript_errors"           0.00
+"left_join"                       0.00
+"mutate"                          0.00
+"replace_na"                      0.00
+"select.data.frame"               0.00
+"tidyselect::eval_select"         0.00
+".Call"                           4.17
+"packageDescription"              4.17
+".rlang_cli_compat"               0.00
+".rlang_cli_format_fallback"      0.00
+"join_mutate"                     0.00
+"left_join.data.frame"            0.00
+"rlang::signal"                   0.00
+"scoped_bindings"                 0.00
+"signal_soft_deprecated"          0.00
+"suppressWarnings"                0.00
+"utils::packageVersion"           0.00
+"[<-"                             0.00
+"[<-.tbl_df"                      0.00
+"mutate.data.frame"               0.00
+"tbl_subassign"                   0.00
+"vectbl_recycle_rhs_rows"         0.00
+"FUN"                             8.33
+"dplyr::summarize"                0.00
+"dplyr::ungroup"                  0.00
+"filter"                          0.00
+"mutate_cols"                     0.00
+"ifelse"                          4.17
+"readRDS"                         4.17
+"cb$putconst"                     0.00
+"cmp"                             0.00
+"cmpCall"                         0.00
+"cmpCallArgs"                     0.00
+"cmpCallSymFun"                   0.00
+"cmpfun"                          0.00
+"cmpPrim2"                        0.00
+"cmpSymbolAssign"                 0.00
+"compiler:::tryCmpfun"            0.00
+"filter.data.frame"               0.00
+"filter_rows"                     0.00
+"genCode"                         0.00
+"h"                               0.00
+"lapply"                          0.00
+"map_lgl"                         0.00
+"mask$eval_all_mutate"            0.00
+"mask$eval_all_summarise"         0.00
+"sel_operation"                   0.00
+"sel_union"                       0.00
+"summarise.grouped_df"            0.00
+"summarise_cols"                  0.00
+"try"                             0.00
+"tryInline"                       0.00
+"%in%"                            4.17
+"...elt"                          4.17
+"<Anonymous>"                     4.17
+"=="                              4.17
+"dplyr_col_modify.data.frame"     4.17
+"exists"                          4.17
+"f"                               4.17
+"gzfile"                          4.17
+"is_function"                     4.17
+"lengths"                         4.17
+"names"                           4.17
+"propagate_names"                 4.17
+"vec_is_list"                     4.17
+"vec_slice"                       4.17
+".rlang_purrr_map_mold"           0.00
+".rs.callAs"                      0.00
+"arrange"                         0.00
+"as_function"                     0.00
+"cmpCallExprFun"                  0.00
+"cmpSym"                          0.00
+"dplyr_col_modify"                0.00
+"dplyr_col_modify.rowwise_df"     0.00
+"dplyr_quosures"                  0.00
+"endots"                          0.00
+"enquos"                          0.00
+"findCenvVar"                     0.00
+"findVar"                         0.00
+"group_by"                        0.00
+"group_by.data.frame"             0.00
+"group_by_prepare"                0.00
+"join_rows"                       0.00
+"map_mold"                        0.00
+"mask$add_one"                    0.00
+"mask$eval_all_filter"            0.00
+"rename.data.frame"               0.00
+"rename_impl"                     0.00
+"Rprof"                           0.00
+"sel_op"                          0.00
+"stopifnot"                       0.00
+"tidyselect::eval_rename"         0.00
+"vapply"                          0.00
+"var"                             0.00
+"vctrs::vec_unique"               0.00
+
+$sample.interval
+[1] 0.02
+
+$sampling.time
+[1] 0.48
