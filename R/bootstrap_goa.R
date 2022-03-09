@@ -324,8 +324,8 @@ curve(dnorm(x,
 
 # Read in bootstrap data and check ----------------------------------------
 
-load(here::here("outputs","POP_allstrata.Rdata"))
-load(here::here("outputs","ATF_allstrata.Rdata"))
+load(here::here("outputs","POP_allstrata_VM.Rdata"))
+load(here::here("outputs","ATF_allstrata_VM.Rdata"))
 
 POP_out %>%
   ggplot(aes(x = log(biomass_stratum_boot))) +
