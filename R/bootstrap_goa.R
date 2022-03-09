@@ -319,3 +319,20 @@ curve(dnorm(x,
 
 
 # save(file = 'outputs/POP_ATF.Rdata',list = c("GOAATF_2021","GOAPOP_2021"))
+
+
+
+# Read in bootstrap data and check ----------------------------------------
+
+load(here::here("outputs","POP_allstrata.Rdata"))
+load(here::here("outputs","ATF_allstrata.Rdata"))
+
+POP_out %>%
+  ggplot(aes(x = log(biomass_stratum_boot))) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~stratum, scales = "free")
+
+ATF_out %>%
+  ggplot(aes(x = log(biomass_stratum_boot))) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~stratum, scales = "free")
