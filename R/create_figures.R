@@ -1,118 +1,3 @@
-# Bootstrap sampling from catch data- all using GOA as an example
-# Everything is calculated for 2021 unless written otherwise
-
-
-# NOTE: If you don't have local versions of the RACEBASE tables, you will need them! 
-# 1) Make sure your Oracle id and pw are updated
-# 2) Download and run this script: https://github.com/afsc-gap-products/design-based-indices/blob/master/R/00_download_data_from_oracle.R
-# You can do step (2) by cloning the whole repo or just putting that script in this folder and running it.
-
-source("R/01_cleanup_data.R")
-
-library(tidyverse)
-
-options(dplyr.summarise.inform = FALSE) # silences verbose outputs from dplyr
-
-# Dir to store outputs
-dir.create(paste0("outputs/", Sys.Date()))
-
-# Preliminary stuff -------------------------------------------------------
-# How many data points per stratum?
-samplecounts <- haul %>%
-  filter(region == "GOA" & abundance_haul == "Y") %>%
-  group_by(cruise, stratum) %>%
-  count() %>%
-  ungroup()
-
-summary(samplecounts)
-# 1-77 abundance hauls per year per stratum (median of 10 hauls per stratum)
-
-# Load functions ----------------------------------------------------------
-
-# These scripts are all from afsc-gap-products/design-based-indices
-source("R/02_get_cpue.R")
-# source("R/03_get_biomass_stratum.R")
-source("R/04_get_biomass_total.R")
-source("R/03_get_biomass_stratum_cpuein.R")
-# source("R/04_get_biomass_total_stratumin.R")
-
-# Set up species, year, region for the bootstrapping ----------------------
-species_in <- 10110 # Set species. POP = 30060, ATF = 10110
-yr_in <- 2021
-region_in <- "GOA"
-nboots <- 1000
-# no need to specify stratum
-
-# Bootstrap at haul level -------------------------------------------------
-# Main question: are stratum-level biomass estimates actually lognormally distributed? Bootstrap at haul scale within a stratum (?) to find out.
-
-# Prep haul data
-abund_hauls <- haul %>%
-  filter(abundance_haul == "Y" &
-    lubridate::year(start_time) == 2021 &
-    region == "GOA")
-
-
-# Set up dataframe with bootstrap design ----------------------------------
-# Size of bootstrap sample - 50% of total hauls
-prop_boot <- 0.5
-# (samplesize <- floor(nrow(abund_hauls) * prop_boot))
-
-
-# Generate bootstrapped CPUE ----------------------------------------------
-bootscpue <- list()
-
-start.time <- Sys.time() # 13 sec for 1000 boots, 1.4 mins for the whole thing+cpue tables
-
-for (i in 1:nboots) {
-  boothaul <- abund_hauls %>%
-    group_by(stratum) %>%
-    dplyr::slice_sample(prop = prop_boot, replace = TRUE) %>%
-    ungroup()
-
-  bootscpue[[i]] <- get_cpue(
-    racebase_tables = list(
-      cruisedat = cruisedat,
-      haul = boothaul,
-      catch = catch
-    ), speciescode = species_in,
-    survey_area = region_in
-  ) %>%
-    mutate(boot_id = i)
-}
-
-Sys.time() - start.time
-
-# Save list of CPUE tables
-save(bootscpue,
-  file = paste0("outputs/", Sys.Date(), "/", "CPUE_", species_in, "_", yr_in, "_", region_in, ".RData")
-)
-
-# Test
-# get_biomass_stratum(cpue_table = bootscpue[[1]],
-#                     speciescode = species_in,
-#                     survey_area = region_in)
-#
-
-
-# Turn that list into a list of biomass_stratums --------------------------
-
-bootsbiomassstratum <- lapply(bootscpue,
-  FUN = function(x) get_biomass_stratum(cpue_table = x, 
-                                        speciescode = species_in, 
-                                        survey_area = region_in)
-)
-
-save(bootscpue, file = paste0("outputs/", Sys.Date(), "/", "stratumbiomass_", species_in, "_", yr_in, "_", region_in, ".RData"))
-
-# Check out results
-test <- bind_rows(bootsbiomassstratum)
-test %>%
-  ggplot(aes(x = stratum_biomass)) +
-  geom_histogram() +
-  facet_wrap(~stratum, scales = "free_x")
-
-
 # Other stuff -------------------------------------------------------------
 png("img/POP_GOA_2021_1000.png", width = 10, height = 5, units = "in", res = 120)
 par(mfrow = c(1, 2))
@@ -121,9 +6,9 @@ par(mfrow = c(1, 2))
 boots_biomass <- boots_biomass[which(boots_biomass != 0)]
 hist(log(boots_biomass), freq = FALSE, main = "POP - GOA - 2021 - stratum 130", xlab = "Log(stratum biomass)", xlim = c(min(log(boots_biomass)), max(log(boots_biomass) * 1.05)))
 curve(dnorm(x, mean = mean(log(boots_biomass)), sd = sd(log(boots_biomass))),
-  add = TRUE,
-  from = min(log(boots_biomass)), to = max(log(boots_biomass)),
-  lwd = 2
+      add = TRUE,
+      from = min(log(boots_biomass)), to = max(log(boots_biomass)),
+      lwd = 2
 )
 
 qqnorm(log(boots_biomass), main = "POP - GOA - 2021 - stratum 130")
@@ -164,9 +49,9 @@ png("img/ATF_GOA_2021_1000.png", width = 10, height = 5, units = "in", res = 120
 par(mfrow = c(1, 2))
 hist(log(boots_biomass), freq = FALSE, main = "ATF - GOA - 2021 - stratum 130", xlab = "Log(stratum biomass)", xlim = c(min(log(boots_biomass)), max(log(boots_biomass) * 1.05)))
 curve(dnorm(x, mean = mean(log(boots_biomass)), sd = sd(log(boots_biomass))),
-  add = TRUE,
-  from = min(log(boots_biomass)), to = max(log(boots_biomass) * 1.05),
-  lwd = 2
+      add = TRUE,
+      from = min(log(boots_biomass)), to = max(log(boots_biomass) * 1.05),
+      lwd = 2
 )
 
 qqnorm(log(boots_biomass), main = "ATF - GOA - 2021 - stratum 130")
@@ -188,19 +73,19 @@ start.time=Sys.time()
 for (j in 1:length(strata_boot)) {
   abund_hauls <- haul %>%
     filter(abundance_haul == "Y" &
-      lubridate::year(start_time) == 2021 &
-      stratum %in% strata_boot[j] &
-      region == "GOA")
+             lubridate::year(start_time) == 2021 &
+             stratum %in% strata_boot[j] &
+             region == "GOA")
   if (nrow(abund_hauls) == 0) {
     next
   }
-
+  
   # Size of bootstrap sample - 50% of total hauls?
   samplesize <- floor(nrow(abund_hauls) * .5)
-
+  
   boots_biomass <- vector()
   set.seed(123)
-
+  
   for (i in 1:nboots) {
     x <- ifelse(samplesize == 0, 1, sample(1:nrow(abund_hauls), size = samplesize, replace = TRUE))
     boot_hauls <- abund_hauls[x, ]
@@ -219,7 +104,7 @@ for (j in 1:length(strata_boot)) {
     )
     boots_biomass[i] <- boot_biomass_stratum$stratum_biomass
   }
-
+  
   bb <- data.frame(
     sim = 1:length(boots_biomass),
     stratum = strata_boot[j],
@@ -227,7 +112,7 @@ for (j in 1:length(strata_boot)) {
     biomass_stratum_boot = boots_biomass
   )
   POP_out <- rbind(POP_out, bb)
- # cat("\n",j / length(strata_boot))
+  # cat("\n",j / length(strata_boot))
 }
 
 Sys.time()-start.time
@@ -241,8 +126,8 @@ ggplot(POP_out, aes(x = log(biomass_stratum_boot))) +
 test <- POP_out %>% filter(stratum == 130)
 hist(log(test$biomass_stratum_boot), freq = FALSE)
 curve(dnorm(x,
-  mean = mean(log(test$biomass_stratum_boot)),
-  sd = sd(log(test$biomass_stratum_boot))
+            mean = mean(log(test$biomass_stratum_boot)),
+            sd = sd(log(test$biomass_stratum_boot))
 ), add = TRUE, lwd = 2)
 
 
@@ -258,19 +143,19 @@ Rprof()
 for (j in 1:1) { #length(strata_boot)
   abund_hauls <- haul %>%
     filter(abundance_haul == "Y" &
-      lubridate::year(start_time) == 2021 &
-      stratum %in% strata_boot[j] &
-      region == "GOA")
+             lubridate::year(start_time) == 2021 &
+             stratum %in% strata_boot[j] &
+             region == "GOA")
   if (nrow(abund_hauls) == 0) {
     next
   }
-
+  
   # Size of bootstrap sample - 50% of total hauls?
   samplesize <- floor(nrow(abund_hauls) * .5)
-
+  
   boots_biomass <- vector()
   set.seed(123)
-
+  
   for (i in 1:nboots) {
     x <- ifelse(samplesize == 0, 1, sample(1:nrow(abund_hauls), size = samplesize, replace = TRUE))
     boot_hauls <- abund_hauls[x, ]
@@ -289,7 +174,7 @@ for (j in 1:1) { #length(strata_boot)
     )
     boots_biomass[i] <- boot_biomass_stratum$stratum_biomass
   }
-
+  
   bb <- data.frame(sim = 1:length(boots_biomass), stratum = strata_boot[j], year = 2021, species = "ATF", biomass_stratum_boot = boots_biomass)
   ATF_out <- rbind(ATF_out, bb)
   cat("\n",j / length(strata_boot))
@@ -308,8 +193,8 @@ ggplot(ATF_out, aes(x = log(biomass_stratum_boot))) +
 test <- ATF_out %>% filter(stratum == 130)
 hist(log(test$biomass_stratum_boot), freq = FALSE)
 curve(dnorm(x,
-  mean = mean(log(test$biomass_stratum_boot)),
-  sd = sd(log(test$biomass_stratum_boot))
+            mean = mean(log(test$biomass_stratum_boot)),
+            sd = sd(log(test$biomass_stratum_boot))
 ), add = TRUE, lwd = 2)
 
 
