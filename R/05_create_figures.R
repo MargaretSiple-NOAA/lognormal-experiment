@@ -1,4 +1,45 @@
-# Other stuff -------------------------------------------------------------
+#############################################################################
+# Make figures for outputs
+# 
+
+#############################################################################
+library(tidyverse)
+
+# Load data for your species/year/region ----------------------------------
+species_in <- 30060 # Set species. POP = 30060, ATF = 10110
+yr_in <- 2021
+region_in <- "GOA"
+outputsdate <- "2022-06-16"
+
+load(file = paste0("outputs/",outputsdate,"/","stratumbiomass_",species_in,"_",yr_in,"_",region_in,".RData")) # dataframe: bootsbiomassstratum
+
+length(bootsbiomassstratum) # should be equal to nboots
+
+bstratum_df <- dplyr::bind_rows(bootsbiomassstratum)
+
+bstratum_df2 <- bstratum_df %>% 
+  filter(stratum_biomass>0)
+
+ln_summary <- bstratum_df2 %>% 
+  group_by(stratum) %>% 
+  summarize(meanb = mean(log(stratum_biomass)),sdb = sd(log(stratum_biomass))) %>%
+              ungroup()
+
+bstratum_df2 %>%
+  ggplot(aes(x=log(stratum_biomass))) + 
+  geom_histogram(aes(y=..density..),
+colour = 1, fill = "white") + 
+  facet_wrap(~stratum) + 
+  stat_function(data = ln_summary, fun = dnorm, args = list(mean = ln_summary$meanb[1],sd = ln_summary$sdb[1]))
+
+hist(log(bstratum_df2), freq = FALSE, main = paste(species_in, yr_in), 
+xlab = "Log(stratum biomass)", xlim = c(min(log(bstratum_df2)), max(log(bstratum_df2) * 1.05)))
+curve(dnorm(x, mean = mean(log(bstratum_df2)), sd = sd(log(bstratum_df2))),
+      add = TRUE,
+      from = min(log(bstratum_df2)), to = max(log(bstratum_df2)),
+      lwd = 2
+)
+
 png("img/POP_GOA_2021_1000.png", width = 10, height = 5, units = "in", res = 120)
 par(mfrow = c(1, 2))
 
