@@ -25,6 +25,7 @@ bstratum_df2 <- bstratum_df
 
 
 # Histograms and density curves for species_in ----------------------------
+mypal <- MetBrewer::met.brewer(name="Benedictus", n=10)
 
 summary_df <- bstratum_df2 %>%
   group_by(year, stratum) %>%
@@ -35,8 +36,6 @@ summary_df <- bstratum_df2 %>%
   ) %>%
   mutate(log_b = pmap(list(n, mean, sd), rnorm)) %>%
   unnest_longer(log_b)
-
-mypal <- MetBrewer::met.brewer(name="Benedictus", n=10)
 
 p1 <- bstratum_df2 %>%
       ggplot(aes(x = log_b, y = ..density..)) +

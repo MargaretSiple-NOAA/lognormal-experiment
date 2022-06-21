@@ -1,8 +1,8 @@
 # lognormal-experiment (in progress)
-Test to see how assumptions about lognormal biomass data affect design-based (DB) indices of abundance.
+Test to see how assumptions about log-normality of stratum biomass affect design-based (DB) indices of abundance. This code produces bootstrapped design-based estimates of stratum-level biomass.
 
 ## Steps
-1. Bootstrap hauls from each stratum (sampling prop=0.5 of the hauls in each stratum during each bootstrap)
+1. Bootstrap hauls from each stratum with replacement (sampling 50% of the hauls in each stratum during each bootstrap). Default bootstrap size is `n=1000`. 
 2. For each bootstrapped dataset, calculate stratum-level biomass
 3. Compare the bootstrapped stratum biomasses to a lognormal distribution
 
