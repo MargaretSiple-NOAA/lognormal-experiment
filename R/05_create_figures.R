@@ -6,10 +6,10 @@
 library(tidyverse)
 
 # Load data for your species/year/region ----------------------------------
-species_in <- 30060 # Set species. POP = 30060, ATF = 10110
+species_in <- 10110 # Set species. POP = 30060, ATF = 10110
 yr_in <- 2021
 region_in <- "GOA"
-outputsdate <- "2022-06-16"
+outputsdate <- "2022-06-21"
 
 load(file = paste0("outputs/",outputsdate,"/","stratumbiomass_",species_in,"_",yr_in,"_",region_in,".RData")) # dataframe: bootsbiomassstratum
 
