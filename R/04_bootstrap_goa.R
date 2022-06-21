@@ -40,7 +40,7 @@ source("R/03_get_biomass_stratum_cpuein.R")
 
 # Set up species, year, region for the bootstrapping ----------------------
 species_in <- 30060 # Set species. POP = 30060, ATF = 10110
-yr_in <- 2019
+yr_in <- 2021
 region_in <- "GOA"
 nboots <- 1000
 # no need to specify stratum
@@ -98,17 +98,32 @@ bootsbiomassstratum <- lapply(bootscpue,
                                         survey_area = region_in)
 )
 
-save(bootscpue, file = paste0("outputs/", Sys.Date(), "/", "stratumbiomass_", species_in, "_", yr_in, "_", region_in, ".RData"))
+save(bootsbiomassstratum, file = paste0("outputs/", Sys.Date(), "/", "stratumbiomass_", species_in, "_", yr_in, "_", region_in, ".RData"))
 
 
 # Peek at results ---------------------------------------------------------
 
-test <- bind_rows(bootsbiomassstratum)
+test <- bind_rows(bootsbiomassstratum) %>% 
+  mutate(log_b = log(stratum_biomass))
+
+
+summary_df <- test %>%
+  group_by(year, stratum) %>%
+  summarize(
+    n = 10000,
+    mean = mean(log_b, na.rm = TRUE),
+    sd = sd(log_b, na.rm = TRUE)
+  ) %>%
+  mutate(log_b = pmap(list(n, mean, sd), rnorm)) %>%
+  unnest_longer(log_b)
+
 
 test %>%
-  ggplot(aes(x = stratum_biomass)) +
+  ggplot(aes(x = log_b, y = ..density..)) +
   geom_histogram() +
-  facet_wrap(~stratum, scales = "free_x")
-
-
+  geom_density(
+    data = summary_df,
+    color = "red"
+  ) +
+  facet_wrap(~stratum, scales = "free_y")
 
