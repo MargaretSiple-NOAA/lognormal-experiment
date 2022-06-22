@@ -34,12 +34,11 @@ summary(samplecounts)
 # These scripts are all from afsc-gap-products/design-based-indices
 source("R/02_get_cpue.R")
 # source("R/03_get_biomass_stratum.R")
-source("R/04_get_biomass_total.R")
 source("R/03_get_biomass_stratum_cpuein.R")
-# source("R/04_get_biomass_total_stratumin.R")
+source("R/04_get_biomass_total.R")
 
 # Set up species, year, region for the bootstrapping ----------------------
-species_in <- 30060 # Set species. POP = 30060, ATF = 10110
+species_in <- 10110 # Set species. POP = 30060, ATF = 10110
 yr_in <- 2021
 region_in <- "GOA"
 nboots <- 1000
@@ -51,13 +50,13 @@ nboots <- 1000
 # Prep haul data
 abund_hauls <- haul %>%
   filter(abundance_haul == "Y" &
-    lubridate::year(start_time) == 2021 &
-    region == "GOA")
+    lubridate::year(start_time) == yr_in &
+    region == region_in)
 
 
 # Set up dataframe with bootstrap design ----------------------------------
 # Size of bootstrap sample - 50% of total hauls
-prop_boot <- 0.5
+prop_boot <- 1
 # (samplesize <- floor(nrow(abund_hauls) * prop_boot))
 
 
@@ -114,6 +113,7 @@ summary_df <- test %>%
     mean = mean(log_b, na.rm = TRUE),
     sd = sd(log_b, na.rm = TRUE)
   ) %>%
+  ungroup() %>%
   mutate(log_b = pmap(list(n, mean, sd), rnorm)) %>%
   unnest_longer(log_b)
 
